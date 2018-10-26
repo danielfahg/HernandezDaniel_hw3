@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pylab as plt
+from scipy.fftpack import fft, fftfreq
 
 print("Por favor revisar este punto con python 2")
 
@@ -49,22 +50,55 @@ plt.savefig("HernandezDaniel_signal.pdf")
 
 N = len(datos[:, 0]) # numero de puntos en el intervalo completo, es numero de filas en arreglo datos
 
-#ESTO SE NECESITA?
-#f = 200.0 # frecuencia en Hz
-#dt = 1 / (f * 32 ) #32 samples por unidad de frecuencia
-
-#def funSumandok(k, n):
-#	return datos[k]*(np.exp(-1.0*(1j)*2.0*np.pi*k*( float(n)/float(N) ) )
-
+#BORRA BLOQUE SI TransforFourier(n, numPun, arrY) FUNCIONA BIEN
+#transfromada de Fourier solo para datos:
 #la funcion que da la transformada de Fourier G(n/N) es para n dado
-def TransforFourier(n):
+#def TransforFourier(n):
+#	TranFoun=[]
+#	for k in range(0, N ): #for i in range(0, N ):
+#		TranFoun.append( datos[k, 1]*(np.exp(-1.0*(1j)*2.0*np.pi*k*float(n)/float(N) ) ) ) #TranFoun.append( funSumandok(i, n) )
+#	return sum(TranFoun)
+
+
+#la funcion que da la transformada de Fourier G(n/numPun) es para n, numPun, arrY dados
+def TransforFourier(n, numPun, arrY):
 	TranFoun=[]
-	for k in range(0, N ): #for i in range(0, N ):
-		TranFoun.append( datos[k, 1]*(np.exp(-1.0*(1j)*2.0*np.pi*k*float(n)/float(N) ) ) ) #TranFoun.append( funSumandok(i, n) )
+	for k in range(0, int(numPun) ): #for i in range(0, N ):
+		TranFoun.append( arrY[k]*(np.exp(-1.0*(1j)*2.0*np.pi*k*float(n)/float(numPun) ) ) ) #TranFoun.append( funSumandok(i, n) )
 	return sum(TranFoun)
 
-print(TransforFourier(1.0))
-print("TransforFourier(0.0) es ", TransforFourier(0.0), "Vs np.sum(datos[:, 1]) que es", np.sum(datos[:, 1]))
+#BORRAR ESTE BLOQUE
+#para datos, arrY[k]=datos[k, 1]
+#print(TransforFourier(1.0, N, datos[:, 1]))
+#print("TransforFourier(0.0, N, datos[:, 1]) es ", TransforFourier(0.0, N, datos[:, 1]), "Vs np.sum(datos[:, 1]) que es", np.sum(datos[:, 1]))
+#arrTresPunTres=np.linspace(0.0, 10.0, N) #arreglo de prueba
+#print( "TransforFourier(arrTresPunTres, N, datos[:, 1])", TransforFourier(arrTresPunTres, N, datos[:, 1]) )
+
+#3.4
+disMue=( datos[len(datos[:, 0])-1, 0]-datos[0, 0])/len(datos[:, 0]) #distancia (o tiempo) por muestra o sample
+
+#print("disMue", disMue, "len(datos[:, 0]", len(datos[:, 0]  ))
+
+frecDatos=fftfreq(N, disMue)
+
+#datosFouY=TransforFourier(frecDatos, N, datos[:, 1])
+#print("frecDatos", frecDatos)
+
+datosFouY=[]
+for i in range(0, len(frecDatos)):
+	datosFouY.append( TransforFourier(frecDatos[i]/N, N, datos[:, 1]) ) # es frecDatos[i]/N o solo frecDatos[i]
+
+print( "datosFouY", datosFouY )
+datosFouYLib=fft(datos[:, 1])
+
+plt.figure()
+plt.plot(frecDatos, np.abs(datosFouY))
+plt.plot(frecDatos, np.abs(datosFouYLib), c="green")
+plt.savefig("HernandezDaniel_TF.pdf")
+
+
+
+
 
 
 
