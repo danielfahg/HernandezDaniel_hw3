@@ -79,21 +79,29 @@ disMue=( datos[len(datos[:, 0])-1, 0]-datos[0, 0])/len(datos[:, 0]) #distancia (
 
 #print("disMue", disMue, "len(datos[:, 0]", len(datos[:, 0]  ))
 
-frecDatos=fftfreq(N, disMue)
+frecDatos=fftfreq(N, disMue) #frecuancias de la trasformada de Fourier de datos
 
 #datosFouY=TransforFourier(frecDatos, N, datos[:, 1])
 #print("frecDatos", frecDatos)
 
-datosFouY=[]
+datosFouY=[] #parametrizacion en y de la trasfo. de Fourier de datos
+
+#esto llena a datosFouY
 for i in range(0, len(frecDatos)):
 	datosFouY.append( TransforFourier(frecDatos[i]/N, N, datos[:, 1]) ) # es frecDatos[i]/N o solo frecDatos[i]
 
+#BORRAR ESTA LINEA
 print( "datosFouY", datosFouY )
+
+#BORRAR ESTA LINEA, ERA PARA COMPARAR CON FFT
 datosFouYLib=fft(datos[:, 1])
 
 plt.figure()
 plt.plot(frecDatos, np.abs(datosFouY))
+
+#BORRAR ESTA LINEA PARA COMPARAR
 plt.plot(frecDatos, np.abs(datosFouYLib), c="green")
+
 plt.savefig("HernandezDaniel_TF.pdf")
 
 
