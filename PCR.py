@@ -5,7 +5,17 @@ print("Por favor revisar este punto con Python 2")
 
 #2.1
 #quitamos la columna 0 porque tiene la identificacion de los pacientes que no nos interesa para este analisis
-arDatos=(np.genfromtxt("WDBC.dat", delimiter=","))[:,1:] #arDatos=np.genfromtxt("WDBC.dat", delimiter=",")
+arrA=np.genfromtxt("WDBC.dat", delimiter=",")
+arDatos=np.copy(arrA[:,1:]) #arDatos=np.genfromtxt("WDBC.dat", delimiter=",")[:,1:]#arDatos=(np.genfromtxt("WDBC.dat", delimiter=","))[:,1:] 
+
+#ACA USAR np.genfromtxt() de tipo str y ir leyendo y si es B cambiar en arDatos por 1.0, y si es M cambiar por 0.0
+
+#arDatos=np.genfromtxt("WDBC.dat", delimiter=",")
+
+#
+
+print("arrDatos[0,0]", arDatos[0,0])
+arDatos[0,0]=0.0 #si se puede asignar un numero float en vez de un nan
 
 #1.Necesitamos poner 0s y 1s en vez de M y B: y si: 1. sacamos solo la segunda columan de tipo string 2. la traducimos con una 
 #funcion a solo 1.0 y 0.0 3. cambiamos a arDatos para que tenga solo numeros y hallar covarianza bien
@@ -15,7 +25,7 @@ print("arDatos", arDatos)
 #print("np.shape(arDatos)", np.shape(arDatos))
 #print("(arDatos[i,j]", arDatos[len(arDatos[:, 0])-1, 2])
 #print("arDatos[:, 1]", arDatos[:, 1])
-print("columna 2", arDatos[:, 1])
+print("columna 2", arDatos[:, 0])
 
 #la columna 2 tiene letras, pero es importante porque son los diagnosticos la cambiamos por M=0.0 y B=1.0
 print("Como la columna con indice 1 tiene letras B o M, los cambiamos por numeros tales que B=1.0 y M=0.0")
