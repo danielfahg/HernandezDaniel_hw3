@@ -114,7 +114,7 @@ autoVals, autoVecs=np.linalg.eig(covWDBC)
 
 #BORRA BLOQUE
 #print("np.shape(autoVecs)", np.shape(autoVecs))
-print("autoVals", autoVals, "autoVecs", autoVecs)
+#print("autoVals", autoVals, "autoVecs", autoVecs)
 #print("len(autoVals)", len(autoVals))
 #print("autoVals", autoVals)
 
