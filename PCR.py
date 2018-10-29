@@ -112,4 +112,19 @@ print(covWDBC)
 #2.3
 autoVals, autoVecs=np.linalg.eig(covWDBC)
 
+#BORRA BLOQUE
+#print("np.shape(autoVecs)", np.shape(autoVecs))
 print("autoVals", autoVals, "autoVecs", autoVecs)
+#print("len(autoVals)", len(autoVals))
+#print("autoVals", autoVals)
+
+#funcion que imprime cada autovector y su correspondiente autovector
+def impAutoValsVecs():
+	print("Los autovalores y autovectores de la matriz de covarianza de los datos de WDBC.dat son:")
+	for i in range(0, len(autoVals) ):
+		print( "autovalor", i+1, "es", autoVals[i] )
+		print("autovector", i+1, "es", autoVecs[:,i])
+
+impAutoValsVecs()
+		
+
