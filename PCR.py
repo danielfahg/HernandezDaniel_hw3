@@ -128,10 +128,43 @@ def impAutoValsVecs():
 impAutoValsVecs()
 
 #BORRA BLOQUE O LINEA	
-print("autoVals", autoVals)
+#print("autoVals", autoVals)
 
 #2.4
-print("Punto 2.4: Los paramentros mas importantes son los de indices 4 y 24 (el primer parametro tendria indice 0), pues son los que al variar mas hacen que se muevan los datos entre datos de pacientes con diagnostico Benigno y pacientes con diagnostico Maligno, por esto debe haber alguna relacion entre el diagnostico y estos parametros de indices 4 y 24 (el primer parametro tendria indice 0) . Se llega a este resultado de la siguiente forma: primero, notamos que el autovalor_1= 4.43782731e+05 y el autovalor_2=7.31010042e+03 son los mas grandes de todos, y podemos aproximadamente despreciar los otros en comparacion, porque estos otros autovalores tienen por mucho orden de magnitud 2, que ya es despreciable en comparacion al valor de los primeros dos autovalores. Segundo, vemos que en el autovector_1 las componentes de mayor magnitud son las de indices 24 y 4 con orden de magnitud -1, y despues las componentes de indices 3, 14 y 23 con orden de magnitud -2 (la primera componente tendria indice 0). Ademas, vemos que en el autovector_2 las componentes de mayor magnitud son las de indices 4 y 24 con orden de magnitud -1, y despues las componentes de indices 3 y 22 con orden de magnitud -2 (la primera componente tendria indice 0). Con esto concluimos que como la direccion en que mas varian nuestros datos de los pacientes son las de el autovector_1 y autovector_2, y los parametros que al variar mas hacen que el dato de un paciente se mueva en la direccion del autovector_1 y/o el autovector_2 son los paramentros de indices 4 y 24 (el primer parametro tendria indice 0). Justamente, estos parametros de indices 4 y 24 son los mas importantes, pues son los que al variar mas hacen que se muevan los datos entre datos de pacientes con diagnostico Benigno y pacientes con diagnostico Maligno, por esto debe haber alguna relacion entre el diagnostico y estos parametros de indices 4 y 24 (el primer parametro tendria indice 0). Cabe se(n)alar que debe hacer una relacion entre el diagnostico y los parametros de indices 3, 14, 22 y 23, pero es una relacion bastante menos fuerte que la descrita anteriormente.")
+print("Punto 2.4: Los paramentros mas importantes son los de indices 4 y 24 (el primer parametro tendria indice 0), tambien como no se tuvo en cuenta la primera columna porque los numeros de identificacion ID no son relevantes para un estudio asi, estos parametros mas impoertantes son los de las columnas 6 y 26 en WDBC.dat con la primera columna con numero 1, son los parametros mas importantes porque son los que al variar mas hacen que se muevan los datos entre datos de pacientes con diagnostico Benigno y pacientes con diagnostico Maligno, por esto debe haber alguna relacion entre el diagnostico y estos parametros de indices 4 y 24 (el primer parametro tendria indice 0) . Se llega a este resultado de la siguiente forma: primero, notamos que el autovalor_1= 4.43782731e+05 y el autovalor_2=7.31010042e+03 son los mas grandes de todos, y podemos aproximadamente despreciar los otros en comparacion, porque estos otros autovalores tienen por mucho orden de magnitud 2, que ya es despreciable en comparacion al valor de los primeros dos autovalores. Segundo, vemos que en el autovector_1 las componentes de mayor magnitud son las de indices 24 y 4 con orden de magnitud -1, y despues las componentes de indices 3, 14 y 23 con orden de magnitud -2 (la primera componente tendria indice 0). Ademas, vemos que en el autovector_2 las componentes de mayor magnitud son las de indices 4 y 24 con orden de magnitud -1, y despues las componentes de indices 3 y 22 con orden de magnitud -2 (la primera componente tendria indice 0). Con esto concluimos que como la direccion en que mas varian nuestros datos de los pacientes son las de el autovector_1 y autovector_2, y los parametros que al variar mas hacen que el dato de un paciente se mueva en la direccion del autovector_1 y/o el autovector_2 son los paramentros de indices 4 y 24 (el primer parametro tendria indice 0). Justamente, estos parametros de indices 4 y 24 son los mas importantes, pues son los que al variar mas hacen que se muevan los datos entre datos de pacientes con diagnostico Benigno y pacientes con diagnostico Maligno, por esto debe haber alguna relacion entre el diagnostico y estos parametros de indices 4 y 24 (el primer parametro tendria indice 0). Cabe se(n)alar que debe hacer una relacion entre el diagnostico y los parametros de indices 3, 14, 22 y 23, pero es una relacion bastante menos fuerte que la descrita anteriormente.")
+
+#2.5
+#para la proyeccion sobre PC1=autovalor_1 Y PC2=autovalor_2
+#arDatos y autoVecs
+#print("np.shape(arDatos)", np.shape(arDatos), "y arDatos es")
+#print(arDatos)
+#print("np.shape(autoVecs)", np.shape(autoVecs), "y autoVecs es")
+#print(autoVecs)
+
+arDatosPCs=np.dot( arDatos, autoVecs ) #arreglo cuyas filas son los datos respecto a los 31 autovectores como 31 ejes
+
+#print("np.shape(arDatosPCs)", np.shape(arDatosPCs), "arDatosPCs")
+#print(arDatosPCs)
+
+def grafDatosProyectados():
+	plt.figure()
+	varColor="blue"
+	for i in range( 0, len(arDatosPCs[:, 0]) ):
+		#arDatosPCs[:, 0] es arreglo de proyecciones de cada dato de un paciente sobre PC1=autovector_1,
+		#arDatosPCs[:, 1] es arreglo de proyecciones de cada dato de un paciente sobre PC2=autovector_2, los autovectores son de magnitud=1 
+		if arDatos[i, 0]==0.0: #verdadero si es M
+			varColor="blue"
+		elif arDatos[i, 0]==1.0: #verdadero si es benigno
+			varColor="green"
+		#plt.scatter(arDatosPCs[:, 0], arDatosPCs[:, 1])
+		plt.scatter([ arDatosPCs[i, 0] ], [ arDatosPCs[i, 1] ], c=varColor)
+	plt.xlabel("$PC1=e_{1}$")
+	plt.ylabel("$PC2=e_{2}$")
+	#plt.legend(loc=0)		
+	plt.savefig("HernandezDaniel_PCA.pdf")
+
+grafDatosProyectados()
+
 
 	
 
