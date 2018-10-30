@@ -126,5 +126,12 @@ def impAutoValsVecs():
 		print("autovector", i+1, "es", autoVecs[:,i])
 
 impAutoValsVecs()
-		
+
+#BORRA BLOQUE O LINEA	
+print("autoVals", autoVals)
+
+#2.4
+print("Punto 2.4: Los paramentros mas importantes son los de indices 4 y 24 (el primer parametro tendria indice 0), pues son los que al variar mas hacen que se muevan los datos entre datos de pacientes con diagnostico Benigno y pacientes con diagnostico Maligno, por esto debe haber alguna relacion entre el diagnostico y estos parametros de indices 4 y 24 (el primer parametro tendria indice 0) . Se llega a este resultado de la siguiente forma: primero, notamos que el autovalor_1= 4.43782731e+05 y el autovalor_2=7.31010042e+03 son los mas grandes de todos, y podemos aproximadamente despreciar los otros en comparacion, porque estos otros autovalores tienen por mucho orden de magnitud 2, que ya es despreciable en comparacion al valor de los primeros dos autovalores. Segundo, vemos que en el autovector_1 las componentes de mayor magnitud son las de indices 24 y 4 con orden de magnitud -1, y despues las componentes de indices 3, 14 y 23 con orden de magnitud -2 (la primera componente tendria indice 0). Ademas, vemos que en el autovector_2 las componentes de mayor magnitud son las de indices 4 y 24 con orden de magnitud -1, y despues las componentes de indices 3 y 22 con orden de magnitud -2 (la primera componente tendria indice 0). Con esto concluimos que como la direccion en que mas varian nuestros datos de los pacientes son las de el autovector_1 y autovector_2, y los parametros que al variar mas hacen que el dato de un paciente se mueva en la direccion del autovector_1 y/o el autovector_2 son los paramentros de indices 4 y 24 (el primer parametro tendria indice 0). Justamente, estos parametros de indices 4 y 24 son los mas importantes, pues son los que al variar mas hacen que se muevan los datos entre datos de pacientes con diagnostico Benigno y pacientes con diagnostico Maligno, por esto debe haber alguna relacion entre el diagnostico y estos parametros de indices 4 y 24 (el primer parametro tendria indice 0). Cabe se(n)alar que debe hacer una relacion entre el diagnostico y los parametros de indices 3, 14, 22 y 23, pero es una relacion bastante menos fuerte que la descrita anteriormente.")
+
+	
 
