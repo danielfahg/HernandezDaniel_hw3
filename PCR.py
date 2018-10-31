@@ -154,16 +154,23 @@ def grafDatosProyectados():
 		#arDatosPCs[:, 1] es arreglo de proyecciones de cada dato de un paciente sobre PC2=autovector_2, los autovectores son de magnitud=1 
 		if arDatos[i, 0]==0.0: #verdadero si es M
 			varColor="blue"
+			#plt.scatter([ arDatosPCs[i, 0] ], [ arDatosPCs[i, 1] ], c=varColor, label=r"$Maligno$")
 		elif arDatos[i, 0]==1.0: #verdadero si es benigno
 			varColor="green"
+			#plt.scatter([ arDatosPCs[i, 0] ], [ arDatosPCs[i, 1] ], c=varColor, label=r"$Benigno$")
 		#plt.scatter(arDatosPCs[:, 0], arDatosPCs[:, 1])
 		plt.scatter([ arDatosPCs[i, 0] ], [ arDatosPCs[i, 1] ], c=varColor)
 	plt.xlabel("$PC1=e_{1}$")
 	plt.ylabel("$PC2=e_{2}$")
-	#plt.legend(loc=0)		
+	#plt.legend(loc=0)
+	plt.title("$Maligno=azul$ $y$ $Benigno=verde$")		
 	plt.savefig("HernandezDaniel_PCA.pdf")
 
 grafDatosProyectados()
+
+#2.6
+print("///////////////////////////////PUNTO2.6/////////////////////")
+print("Basado en el resultado de la grafica HernandezDaniel_PCA.pdf considero que el metodo de PCA si es util para ayudar a realizar el diagnostico, porque se puede apreciar que hay un intervalo en los valores de la componente de PC1=autovector_1, aproximadamente [-800, -200], para los que los diagnosticos son en su gran mayoria Benigno, aunque hay algunos pocos diagnosticos Maligno. Similarmente, se puede apreciar que hay un intervalo en los valores de la componente de PC2=autovector_2, aproximadamente [-200, -40], fuera del cual nuestros datos tienen siempre diagnostico Maligno. Y dentro de ese intervalo el diagnostico es principalmente Benigno si ademas los datos estan en el intervalo de PC1 mencionado al inicio, pero dentro de este intervalo para PC2 los dignosticos son casi en su totalidad Maligno si ademas los datos estan fuera del intervalo de PC1 mencionado al inicio. Entonces, hay ciertas regiones en la grafica de los datos en el plano de PC2 Vs PC1 en los que el diagnostico de nuestros datos es siempre uno, lo cual hace que sea muy util el metodo de PCA para realizar el diagnostico, pero hay otras regiones en el plano de PC2 Vs PC1 en los que si bien la gran mayoria de los datos tiene un diagnostico claro, existen algunas datos para los que el diagnostico es diferente, por eso en estas regiones no se puede afirmar a ciencia cierta cual es el diagnostico a partir de este metodo, al menos usando dos componentes principales solamente. En conclusion, a partir de nuestros datos de WDBC.dat hay regiones donde el diagnostico resulta claro y definido, en ellas pienso que el metodo de PCA podria tener sus mayores aplicaciones, aunque siendo el diagnostico de cancer de una persona algo sumamente delicado me gustaria analizar los datos con mas componentes principales y hacer mas experimentos y pruebas para asegurarce de que si funciona perfectamente. Adicionalmente, hay otras regiones donde el diagnostico no es claro por completo, por esto considero que en ellas el metodo podria ayudar y orientar el diagnostico, pero no dar un diagnostico definitivo. Por esto considero que el metodo de PCA si es util para ayudar a realizar el diagnostico")
 
 
 	
