@@ -1,39 +1,17 @@
 import numpy as np
 import matplotlib.pylab as plt
 from scipy.fftpack import fft, fftfreq
+from scipy import interpolate
 
 print("Por favor revisar este punto con python 2")
 
 #3.1
 
-#BORRA BLOQUE
-#links de investigacion>
-#https://www.google.com/search?client=ubuntu&channel=fs&q=read+a+.dat+python&ie=utf-8&oe=utf-8
-#https://stackoverflow.com/questions/11798800/reading-a-binary-dat-file-as-an-array
-#https://stackoverflow.com/questions/49329010/how-to-decode-a-dat-file-in-python
-#https://www.kaggle.com/questions-and-answers/27699
-#https://docs.scipy.org/doc/numpy-1.15.1/reference/generated/numpy.fromfile.html
-#//////////////////////////////
-#genformtxt funciona segun la profesora para el .dat
-#ayuda obedecer a la termianl su sugerencia para lo de git
 
 #arreglos de signal.dat y incompletos.dat respectivamente
 datos=np.genfromtxt("signal.dat", delimiter=" , ")
 datosInc=np.genfromtxt("incompletos.dat", delimiter=" , ")
 
-#BORRA BLOQUE
-#preuba de datos
-#print(datos)
-#print("datos[:,iesimo]", datos[:,0])
-#print("np.shape(datos)", np.shape(datos) )
-#print("datos[iesimo,iesimo]", len(datos), datos[len(datos)-1, 1])
-#/////////////////////
-#prueba de datosInc
-#print("datosInc", datosInc)
-#print("datosInc[iesimo,iesimo]", datosInc[len(datosInc[:,0])-1,1])
-#print("np.shape(datosInc)", np.shape(datosInc) )
-#print("np.shape(datos)", np.shape(datos) )
-#print("datos[iesimo,iesimo]", len(datos), datos[len(datos)-1, 1])
 
 #3.2
 #graficamos a datos, los tomamos como si no tuvieran unidades
@@ -44,84 +22,105 @@ plt.ylabel("$f(t)$")
 plt.legend(loc=0)
 plt.savefig("HernandezDaniel_signal.pdf")
 
+
+
 #3.3
-#Teniendo en cuenta la seccion de Fourier con la que nos ense(n)aron en la magistral este tema, aunque ahi solo se usan los paquetes.
-#la funcion dada por datos no es periodica
-
-N = len(datos[:, 0]) # numero de puntos en el intervalo completo, es numero de filas en arreglo datos
-
-#BORRA BLOQUE SI TransforFourier(n, numPun, arrY) FUNCIONA BIEN
-#transfromada de Fourier solo para datos:
-#la funcion que da la transformada de Fourier G(n/N) es para n dado
-def TransforFourierDos(n): #cambien ek nombre con el Dos
-	TranFoun=[]
-	for k in range(0, N ): #for i in range(0, N ):
-		TranFoun.append( datos[k, 1]*(np.exp(-1.0*(1j)*2.0*np.pi*k*float(n)/float(N) ) ) ) #TranFoun.append( funSumandok(i, n) )
-	return sum(TranFoun)
-
-
-#la funcion que da la transformada de Fourier G(n/numPun) es para n, numPun, arrY dados
-def TransforFourier(n, numPun, arrY):
-	TranFoun=[]
-	for k in range(0, int(numPun) ): #for i in range(0, N ):
-		TranFoun.append( arrY[k]*(np.exp(-1.0*(1j)*2.0*np.pi*k*float(n)/float(numPun) ) ) ) #TranFoun.append( funSumandok(i, n) )
-	return np.sum(TranFoun)
-
-#BORRAR ESTE BLOQUE
-#para datos, arrY[k]=datos[k, 1]
-#print(TransforFourier(1.0, N, datos[:, 1]))
-#print("TransforFourier(0.0, N, datos[:, 1]) es ", TransforFourier(0.0, N, datos[:, 1]), "Vs np.sum(datos[:, 1]) que es", np.sum(datos[:, 1]))
-#arrTresPunTres=np.linspace(0.0, 10.0, N) #arreglo de prueba
-#print( "TransforFourier(arrTresPunTres, N, datos[:, 1])", TransforFourier(arrTresPunTres, N, datos[:, 1]) )
-plt.figure()
-arrn=np.linspace(-100.0, 100.0, 100)
-print("arrn", arrn)
-#FourierYPru=[]
-#for ind in (0, len(arrn) ): #for ind in (0, len(arrn) ):
-#	#print("TransforFourier(arrn[ind], N, datos[:, 1])", TransforFourier(arrn[ind], N, datos[:, 1]))	
-#	variable=TransforFourier(arrn[ind], N, datos[:, 1])
-#	FourierYPru.append( variable )#FourierYPru.append(  TransforFourier(arrn[ind], N, datos[:, 1]) )
-#	#FourierYPru[ind]=
-#print("len(arrn)", len(arrn), "len(FourierYPru)", len(FourierYPru))
-#print(FourierYPru)
-#plt.plot(arrn, FourierYPru) #Y SI USAMOS LA FUNCION DE TRANFORfOURIER(n) de solo n a ver si la funcion se evalua en el arreglo
-
-#arrFourierYPruDos=TransforFourierDos(arrn) #NO FUNCIONO EVALUANDO LA FUNCON EN EL ARREGLO
-#plt.plot(arrn, FourierYPruDos)
-
-plt.savefig("PRUEBA3_3BORRAR.pdf")
-#////////////////////////////////
+def TraFou(arrY):
+	arrYFou=[]#arrYFou=np.array([])
+	for n in range(0, len(arrY) ):
+		variable=0.0
+		for k in range(0, len(arrY)  ):
+			variable=variable+( arrY[k]*(np.exp(-1.0*(1j)*2.0*np.pi*k*float(n)/float(len(arrY)) ) ) )
+		
+		arrYFou.append(variable)
+	return arrYFou
 
 #3.4
+#plt.plot(frecDatos, np.abs(datosFouYLib), c="green")
+plt.figure()
+datosFouY=TraFou(datos[:, 1])
+#print("datosFouY", datosFouY)
 disMue=( datos[len(datos[:, 0])-1, 0]-datos[0, 0])/len(datos[:, 0]) #distancia (o tiempo) por muestra o sample
+datosFouFre=fftfreq(len(datos[:, 0]), disMue)
+plt.plot(datosFouFre, np.abs( datosFouY), label="$T.$ $Fourier$ $de$ $signal.dat$ ")
+plt.xlabel("$w$")
+plt.ylabel("$F(f)(w)$")
+plt.legend(loc=0)
+#plt.show()
+plt.savefig("HernandezDaniel_TF.pdf")
 
-#print("disMue", disMue, "len(datos[:, 0]", len(datos[:, 0]  ))
+#3.5
+print("Punto 3.5: Las frecuencias principales de mi se(n)al son en las que ocurren los picos mas grandes, es decir en  w=-393, -213, -143, aproximadamente 0, 143, 213, 393, en radianes por segundo ")
 
-frecDatos=fftfreq(N, disMue) #frecuancias de la trasformada de Fourier de datos
-
-#datosFouY=TransforFourier(frecDatos, N, datos[:, 1])
-#print("frecDatos", frecDatos)
-
-datosFouY=[] #parametrizacion en y de la trasfo. de Fourier de datos
-
-#esto llena a datosFouY
-for i in range(0, len(frecDatos)):
-	#print("TransforFourier(frecDatos[i]/N, N, datos[:, 1])", TransforFourier(frecDatos[i]/N, N, datos[:, 1]))	
-	datosFouY.append( TransforFourier(frecDatos[i]/N, N, datos[:, 1]) ) # es frecDatos[i]/N o solo frecDatos[i]
-
-#BORRAR ESTA LINEA
-#print( "datosFouY", datosFouY ) #DESCOMENTAR???
-
-#BORRAR ESTA LINEA, ERA PARA COMPARAR CON FFT
-datosFouYLib=fft(datos[:, 1])
+#3.6
+#arrFouFre ya se debe haber pasado por fftfreq
+def filPasBaj(fc, arrYFou, arrFouFre):
+	arrYFouFil=np.copy( arrYFou )
+	for i in range(0, len(arrYFou) ):
+		if arrFouFre[i]>=fc:
+			arrYFouFil[i]=0.0
+	return arrYFouFil
 
 plt.figure()
-plt.plot(frecDatos, np.abs(datosFouY))
+datosFouYFil=filPasBaj(1000.0, datosFouY, datosFouFre)
+InvDatosFouYFil=np.fft.ifft(datosFouYFil)
+plt.plot(datos[:, 0], InvDatosFouYFil)
+plt.savefig("HernandezDaniel_filtrada.pdf")
 
-#BORRAR ESTA LINEA PARA COMPARAR
-plt.plot(frecDatos, np.abs(datosFouYLib), c="green")
+#3.7
+print("Punto 3.7: TraFou(arrY)apoyandonos en la grafica GraficaIncompletos.pdf hecha para este punto vemos que hay muchos puntos en el eje horizontal que estan muy espaciados, por lo que perdemos bastante informacion de lo que pasa en el medio de ellos, ademas de que en principio esta funcion no es continua por estos saltos notables y grandes, y la trasnformada de Fourier solo se puede calcular para funciones continuas en su forma analitica porque esta definida como una integral. Ya que falta informacion y por esto mismo la funcion resulta incompleta en ciertas partes, no es continua  y en principio nuestra aproximacion numerica de la transformada de Fourier no se estaria aplicando correctamente. Por eso no se puede.")
+plt.figure()
+plt.plot(datosInc[:, 0], datosInc[:, 1])
+plt.savefig("GraficaIncompletos.pdf")
 
-plt.savefig("HernandezDaniel_TF.pdf")
+#3.8
+#tomando mi implementacion de la tarea 2
+def interpolar(arrDatos, arrX):
+		
+	funCuaDatosY=interpolate.interp1d(arrDatos[:,0], arrDatos[:, 1], kind='quadratic') #esto es una funcion funCuaDatosY(x) con x un numero tipo float en el eje x, la funcion retorna el valor en y para ese x segun la interpolacion cuadratica
+	
+	CuaDatosY=funCuaDatosY(arrX)
+	
+	funCubDatosY=interpolate.interp1d(arrDatos[:,0], arrDatos[:, 1], kind="cubic")
+	
+	CubDatosY=funCubDatosY(arrX)
+	
+	
+	return CuaDatosY, CubDatosY
+
+datosIncIntX=np.linspace(0.000390625, 0.028515625, 512)
+
+datosIncIntCuaY, datosIncIntCubY= interpolar(datosInc, datosIncIntX)
+
+#tran. Fourier:
+datosIncIntCuaYFou=TraFou(datosIncIntCuaY)
+datosIncIntCubYFou=TraFou(datosIncIntCubY)
+datosIncIntFouFre=fftfreq(len(datosIncIntX), datosIncIntX[1]-datosIncIntX[0] )
+
+plt.figure()
+#plt.subplots(331)
+
+plt.plot(datosFouFre, np.abs( datosFouY), label="$T.$ $Fourier$ $de$ $signal.dat$ ")
+plt.xlabel("$w$")
+plt.ylabel("$F(f)(w)$")
+
+plt.plot(datosIncIntFouFre, np.abs( datosIncIntCuaYFou), label="$T.$ $Fourier$ $de$ $interpoladosCua$ ")
+#plt.xlabel("$w$")
+#plt.ylabel("$F(f)(w)$")
+
+plt.plot(datosIncIntFouFre, np.abs( datosIncIntCubYFou), label="$T.$ $Fourier$ $de$ $interpoladosCubica$ ")
+#plt.xlabel("$w$")
+#plt.ylabel("$F(f)(w)$")
+
+plt.legend(loc=0)
+
+plt.savefig("HernandezDaniel_TF_interpola.pdf")
+
+
+
+		
+	
+
 
 
 
